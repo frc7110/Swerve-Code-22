@@ -47,18 +47,29 @@ class DriveEncoder : public frc::Encoder {
 
 class MA3AnalogEncoder {
  public:
-     MA3AnalogEncoder(const int &a, const int &b) : m_channel(a), m_potentiometer(NULL) {printf("a=%d\n", a);};
+     MA3AnalogEncoder(const int &a, const int &b) : m_channel(a), m_potentiometer(a), m_relative_zero(0.0) 
+     {
+      //  printf("a=%d %p\n", a, (void*)&m_potentiometer);
+       m_relative_zero = m_potentiometer.GetAverageVoltage();
+     };
 
   double Get() const 
   {
-      // double v = m_potentiometer->GetAverageVoltage();
-      double v = 2048;
-      printf("%d: v=%5.2f, r=%5.2f\n", m_channel, v, 2 * 3.1415 * 4096 * v);
-      return 2 * 3.1415 * 4096 / v;};
+      double v = m_potentiometer.GetAverageVoltage();
+      double a = v - m_relative_zero;
+
+      if (a < 0.0) a += 5.0;
+
+      printf("%d: a=%5.2f, r=%5.2f\n", m_channel, a, 2 * 3.1415 * (0.0 - a));
+
+      return 2 * 3.1415 * (5.0 - a);
+  };
+
   void SetDistancePerPulse(const double &) {};
 
 private:
     int m_channel;
-      frc::AnalogInput *m_potentiometer;
+      frc::AnalogInput m_potentiometer;
+      double m_relative_zero;
 };
 

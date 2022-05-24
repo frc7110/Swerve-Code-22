@@ -15,8 +15,8 @@
 #include <units/velocity.h>
 #include <units/voltage.h>
 #include <wpi/numbers>
-#include <rev/CANSparkMax.h>
 
+#include <rev/CANSparkMax.h>
 #include "Encoders.h"
 
 class SwerveModule {

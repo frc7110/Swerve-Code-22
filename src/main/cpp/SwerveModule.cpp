@@ -21,7 +21,6 @@ SwerveModule::SwerveModule(const int driveMotorChannel,
   // Set the distance per pulse for the drive encoder. We can simply use the
   // distance traveled for one rotation of the wheel divided by the encoder
   // resolution.
-    printf("%d %d de=%d,%d t3=%d,%d\n", driveMotorChannel, turningMotorChannel, driveEncoderChannelA, driveEncoderChannelB, turningEncoderChannelA, turningEncoderChannelB);
     m_driveEncoder.SetDistancePerPulse(2 * wpi::numbers::pi * kWheelRadius / kEncoderResolution);
 
   // Set the distance (in this case, angle) per pulse for the turning encoder.
@@ -60,6 +59,8 @@ void SwerveModule::SetDesiredState(
       m_turningPIDController.GetSetpoint().velocity);
 
   // Set the motor outputs.
-  m_driveMotor.SetVoltage(units::volt_t{driveOutput} + driveFeedforward);
+  // m_driveMotor.SetVoltage(units::volt_t{driveOutput} + driveFeedforward);
   m_turningMotor.SetVoltage(units::volt_t{turnOutput} + turnFeedforward);
+  m_driveMotor.SetVoltage(units::volt_t{1.0});
+  // m_turningMotor.SetVoltage(units::volt_t{0.0});
 }
